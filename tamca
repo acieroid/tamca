@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# To use a specified noise with mplayer:
+# BEEP="mplayer /path/to/noise.ogg"
+BEEP="`which beep`"
+if [ -z $1 ]
+then
+    MINUTES=25
+else
+    MINUTES="$1"
+fi
+
+TIME=$((MINUTES*60))
+
+while [ $TIME -ge 0 ]
+do
+    printf "\r%0.2d:%0.2d" $((TIME/60)) $((TIME%60))
+    sleep 1
+    TIME=$((TIME-1))
+done
+
+echo -e "\nIt's time for a five minutes break :)"
+
+$BEEP
