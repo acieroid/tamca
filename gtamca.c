@@ -4,6 +4,7 @@
 
 static const int POMODORO_TIME = 25*60;
 static const int PAUSE_TIME = 5*60;
+static const char *FILENAME = "ding.wav";
 
 struct {
   GtkWidget *window; /* window */
@@ -29,6 +30,9 @@ gchar *seconds_to_str(int seconds)
 
 static void destroy(GtkWidget *widget, gpointer data)
 {
+  if (!alutExit()) {
+    g_error("ALUT error: %s\n", alutGetErrorString(alutGetError()));
+  }
   gtk_main_quit();
 }
 
@@ -67,10 +71,14 @@ static gboolean update_timer(gpointer data)
 int main(int argc, char *argv[])
 {
   gtk_init(&argc, &argv);
-  alutInit(&argc, argv);
+
+  if (!alutInit(&argc, argv)) {
+    g_error("ALUT error: %s", alutGetErrorString(alutGetError()));
+    return 1;
+  }
 
   /* ALUT stuff */
-  gtamca.sound_buffer = alutCreateBufferHelloWorld();
+  gtamca.sound_buffer = alutCreateBufferFromFile(FILENAME);
   alGenSources(1, &gtamca.sound_source);
   alSourcei(gtamca.sound_source, AL_BUFFER, gtamca.sound_buffer);
 
