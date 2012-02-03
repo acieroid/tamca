@@ -1,5 +1,6 @@
-#include <gtk/gtk.h>
 #include <time.h>
+#include <gtk/gtk.h>
+#include <AL/alut.h>
 
 static const int POMODORO_TIME = 25*60;
 static const int PAUSE_TIME = 5*60;
@@ -9,6 +10,7 @@ struct {
   GtkWidget *time_label; /* label */
   GtkWidget *start, *pause; /* buttons */
   GtkWidget *vbox, *hbox; /* boxes */
+  ALuint sound_buffer, sound_source;
   gboolean started;
   int time;
   time_t last_update;
@@ -53,7 +55,7 @@ static gboolean update_timer(gpointer data)
 
     if (gtamca.time <= 0) {
       gtamca.time = 0;
-      /* TODO: ding ! */
+      alSourcePlay(gtamca.sound_source);
     }
 
     gtk_label_set_text(GTK_LABEL(gtamca.time_label),
@@ -64,8 +66,15 @@ static gboolean update_timer(gpointer data)
 
 int main(int argc, char *argv[])
 {
-  gtk_init (&argc, &argv);
+  gtk_init(&argc, &argv);
+  alutInit(&argc, argv);
 
+  /* ALUT stuff */
+  gtamca.sound_buffer = alutCreateBufferHelloWorld();
+  alGenSources(1, &gtamca.sound_source);
+  alSourcei(gtamca.sound_source, AL_BUFFER, gtamca.sound_buffer);
+
+  /* GTK stuff */
   gtamca.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   g_signal_connect(gtamca.window, "destroy", G_CALLBACK(destroy), NULL);
 
