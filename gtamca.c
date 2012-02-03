@@ -5,6 +5,7 @@
 static const int POMODORO_TIME = 25*60;
 static const int PAUSE_TIME = 5*60;
 static const char *FILENAME = "ding.wav";
+static const char *FORMAT = "<span font=\"35\">%d:%.2d</span>";
 
 struct {
   GtkWidget *window; /* window */
@@ -18,14 +19,11 @@ struct {
 } gtamca;
 
 /**
- * Convert a time in second into a string (25*60 seconds -> "25:00")
+ * Convert a time in second into a markup string using FORMAT
  */
-gchar *seconds_to_str(int seconds)
+gchar *seconds_to_markup(int seconds)
 {
-  /* TODO: size depend on the seconds */
-  gchar *res = g_malloc(6 * sizeof res);
-  g_snprintf(res, 6, "%d:%0.2d", seconds/60, seconds%60);
-  return res;
+  return g_markup_printf_escaped(FORMAT, seconds/60, seconds%60);
 }
 
 static void destroy(GtkWidget *widget, gpointer data)
@@ -39,7 +37,8 @@ static void destroy(GtkWidget *widget, gpointer data)
 static void start_timer(GtkWidget *widget, gpointer data)
 {
   int seconds = (int) data;
-  gtk_label_set_text(GTK_LABEL(gtamca.time_label), seconds_to_str(seconds));
+  gtk_label_set_markup(GTK_LABEL(gtamca.time_label),
+                       seconds_to_markup(seconds));
   gtamca.started = TRUE;
   gtamca.time = seconds;
   gtamca.last_update = time(NULL);
@@ -62,8 +61,8 @@ static gboolean update_timer(gpointer data)
       alSourcePlay(gtamca.sound_source);
     }
 
-    gtk_label_set_text(GTK_LABEL(gtamca.time_label),
-                       seconds_to_str(gtamca.time));
+    gtk_label_set_markup(GTK_LABEL(gtamca.time_label),
+                         seconds_to_markup(gtamca.time));
   }
   return TRUE;
 }
@@ -86,11 +85,13 @@ int main(int argc, char *argv[])
   gtamca.window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
   g_signal_connect(gtamca.window, "destroy", G_CALLBACK(destroy), NULL);
 
-  gtamca.time_label = gtk_label_new(seconds_to_str(0));
+  gtamca.time_label = gtk_label_new(NULL);
   gtamca.start = gtk_button_new_with_label("New pomodoro");
   gtamca.pause = gtk_button_new_with_label("Pause");
   gtamca.vbox = gtk_vbox_new(TRUE, 2);
   gtamca.hbox = gtk_hbox_new(FALSE, 2);
+
+  gtk_label_set_markup(GTK_LABEL(gtamca.time_label), seconds_to_markup(0));
 
   g_signal_connect(gtamca.start, "clicked",
                    G_CALLBACK(start_timer), (gpointer) POMODORO_TIME);
