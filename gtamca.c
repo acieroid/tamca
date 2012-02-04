@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
   gtk_widget_show_all(gtamca.vbox);
   gtk_widget_show_all(gtamca.window);
 
-  g_idle_add(update_timer, NULL);
+  g_timeout_add(500, update_timer, NULL);
 
   gtk_main();
 
