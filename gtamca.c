@@ -12,7 +12,7 @@ static char *FORMAT = "<span font=\"35\">%d:%.2d</span>";
 
 #define FILENAME "ding.wav";
 #ifdef PREFIX
-static char *FILEPATH = PREFIX "/share/tamca" FILENAME;
+static char *FILEPATH = PREFIX "/share/tamca/" FILENAME;
 #else
 static char *FILEPATH = FILENAME;
 #endif
@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
   }
 
   /* ALUT stuff */
+  g_debug("Using sound file: %s", FILEPATH);
   gtamca.sound_buffer = alutCreateBufferFromFile(FILEPATH);
   alGenSources(1, &gtamca.sound_source);
   alSourcei(gtamca.sound_source, AL_BUFFER, gtamca.sound_buffer);
