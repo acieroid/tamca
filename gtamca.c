@@ -1,3 +1,7 @@
+/**
+ * This program is licensed under the 2-clause BSD License, see the
+ * LICENSE file
+ */
 #include <time.h>
 #include <gtk/gtk.h>
 #include <AL/alut.h>

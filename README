@@ -10,3 +10,5 @@ Unix based systems and on Windows. The compilation requires CMake.
 
 The sound distributed with tamca is licensed under CC-BY, by 'ls'. It
 was found on http://www.freesound.org/people/LS/sounds/19911/
+
+Tamca is licensed under the 2-clause BSD license, see the LICENSE file.
