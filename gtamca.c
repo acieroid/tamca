@@ -2,10 +2,17 @@
 #include <gtk/gtk.h>
 #include <AL/alut.h>
 
-static const int POMODORO_TIME = 25*60;
-static const int PAUSE_TIME = 5*60;
-static const char *FILENAME = "ding.wav";
-static const char *FORMAT = "<span font=\"35\">%d:%.2d</span>";
+static int POMODORO_TIME = 25*60;
+static int PAUSE_TIME = 5*60;
+static char *FILENAME = "ding.wav";
+static char *FORMAT = "<span font=\"35\">%d:%.2d</span>";
+
+static GOptionEntry options[] = {
+  { "time", 't', 0, G_OPTION_ARG_INT, &POMODORO_TIME, "Time of a pomodoro (in seconds)", "N" },
+  { "pause", 'p', 0, G_OPTION_ARG_INT, &PAUSE_TIME, "Time of a pause (in seconds)", "N" },
+  { "sound", 's', 0, G_OPTION_ARG_STRING, &FILENAME, "File to use as sound", "PATH" },
+  { "format", 'f', 0, G_OPTION_ARG_STRING, &FORMAT, "Format of the time", "FMT" }
+};
 
 struct {
   GtkWidget *window; /* window */
@@ -69,7 +76,19 @@ static gboolean update_timer(gpointer data)
 
 int main(int argc, char *argv[])
 {
+  GError *error = NULL;
+  GOptionContext *context;
+
   gtk_init(&argc, &argv);
+
+  /* Parse options */
+  context = g_option_context_new("- A pomodoro technique timer");
+  g_option_context_add_main_entries(context, options, NULL);
+  g_option_context_add_group(context, gtk_get_option_group(TRUE));
+  if (!g_option_context_parse(context, &argc, &argv, &error)) {
+    g_error("Can't parse options: %s", error->message);
+    return 1;
+  }
 
   if (!alutInit(&argc, argv)) {
     g_error("ALUT error: %s", alutGetErrorString(alutGetError()));
