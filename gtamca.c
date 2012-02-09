@@ -8,13 +8,19 @@
 
 static int POMODORO_TIME = 25*60;
 static int PAUSE_TIME = 5*60;
-static char *FILENAME = "ding.wav";
 static char *FORMAT = "<span font=\"35\">%d:%.2d</span>";
+
+#define FILENAME "ding.wav";
+#ifdef PREFIX
+static char *FILEPATH = PREFIX "/share/tamca" FILENAME;
+#else
+static char *FILEPATH = FILENAME;
+#endif
 
 static GOptionEntry options[] = {
   { "time", 't', 0, G_OPTION_ARG_INT, &POMODORO_TIME, "Time of a pomodoro (in seconds)", "N" },
   { "pause", 'p', 0, G_OPTION_ARG_INT, &PAUSE_TIME, "Time of a pause (in seconds)", "N" },
-  { "sound", 's', 0, G_OPTION_ARG_STRING, &FILENAME, "File to use as sound", "PATH" },
+  { "sound", 's', 0, G_OPTION_ARG_STRING, &FILEPATH, "File to use as sound", "PATH" },
   { "format", 'f', 0, G_OPTION_ARG_STRING, &FORMAT, "Format of the time", "FMT" }
 };
 
@@ -100,7 +106,7 @@ int main(int argc, char *argv[])
   }
 
   /* ALUT stuff */
-  gtamca.sound_buffer = alutCreateBufferFromFile(FILENAME);
+  gtamca.sound_buffer = alutCreateBufferFromFile(FILEPATH);
   alGenSources(1, &gtamca.sound_source);
   alSourcei(gtamca.sound_source, AL_BUFFER, gtamca.sound_buffer);
 
