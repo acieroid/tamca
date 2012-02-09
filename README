@@ -1,0 +1,12 @@
+Tamca (Tomato in lojban) is a simple timer meant to be used for the
+Pomodoro Technique. It can be used from a shell with the tamca
+command, or from a graphic session with the gtamca command.
+
+tamca requires either the beep command or mplayer to play the sound at
+the end of the timer.
+
+gtamca requires GTK2 and OpenAL (with ALUT). It should be buildable on
+Unix based systems and on Windows. The compilation requires CMake.
+
+The sound distributed with tamca is licensed under CC-BY, by 'ls'. It
+was found on http://www.freesound.org/people/LS/sounds/19911/
