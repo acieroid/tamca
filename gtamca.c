@@ -21,7 +21,8 @@ static GOptionEntry options[] = {
   { "time", 't', 0, G_OPTION_ARG_INT, &POMODORO_TIME, "Time of a pomodoro (in seconds)", "N" },
   { "pause", 'p', 0, G_OPTION_ARG_INT, &PAUSE_TIME, "Time of a pause (in seconds)", "N" },
   { "sound", 's', 0, G_OPTION_ARG_STRING, &FILEPATH, "File to use as sound", "PATH" },
-  { "format", 'f', 0, G_OPTION_ARG_STRING, &FORMAT, "Format of the time", "FMT" }
+  { "format", 'f', 0, G_OPTION_ARG_STRING, &FORMAT, "Format of the time", "FMT" },
+  { NULL }
 };
 
 struct {
