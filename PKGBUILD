@@ -8,7 +8,7 @@ arch=('x86_64' 'i686')
 license=('BSD')
 depends=('gtk2' 'freealut')
 optdepends=('beep: PC speaker beep support'
-            'mplayer: soud support')
+            'mplayer: sound support')
 source=("https://github.com/acieroid/tamca/tarball/0.1")
 md5sums=('adcb7d8cd9e8953f93d81471e85f6a31')
 
