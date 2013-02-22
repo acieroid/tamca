@@ -3,7 +3,7 @@
 
 # To use a specified noise with mplayer:
 # BEEP="mplayer /path/to/noise.ogg"
-BEEP="`which beep`"
+BEEP="`which beep -f 5000 -l 50 -r 2`"
 if [ -z $1 ]
 then
     MINUTES=25
