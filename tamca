@@ -20,6 +20,6 @@ do
     TIME=$((TIME-1))
 done
 
-echo -e "\nIt's time for a five minutes break :)"
+echo -e "\nIt's time for a five minute break :)"
 
 $BEEP
